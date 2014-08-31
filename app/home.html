@@ -1,0 +1,104 @@
+<div class="container" ng-init="expand=false">
+     <div class="row">  
+        <div class="col-md-12">   
+            <div class="well well-sm">
+                <input id="toDo" type="text" ng-model= "todoName" name="todoName" placeholder="Enter your task here" ng-required />      
+                <button id="addtoDo" class= "btn btn-primary btn-sm" type="button" ng-disabled="!todoName" ng-click="addTodo()" data-toggle="tooltip" data-placement="right" title="Add Task to list">Create Task</button>
+                 <div class="stats pull-right">                       
+                    <span class="label label-success">Done: {{(todos | filter:{done:true}).length }}</span>
+                    <span class="label label-warning">Open: {{(todos | filter:{done:false}).length }}</span>
+                    <span class="label label-default">Total: {{todos.length}}</span>                        
+                </div>              
+            </div>
+        </div>              
+    </div>
+
+    <div class="col-md-12"> 
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">To Do </h3>
+                  </div>
+                  <div class="panel-body">
+                    <ul id="todolist" class="list-group list-container" ng-drop="true" ng-drop-success="onDrop($data,todos,false)">
+                       <li ng-drag="true" ng-drag-data="todo" ng-drag-success="dropSuccessHandler(todos,todo)" class="list-group-item" ng-repeat="todo in todos | filter:{done:false}"> 
+                           
+                           <span ng-hide="expand==true" class="pull-left btn  btn-sm glyphicon glyphicon-plus-sign" ng-click="expand=!expand"></span>
+                           <span ng-show="expand==true" class="pull-left btn  btn-sm glyphicon glyphicon-minus-sign" ng-click="expand=!expand"></span>
+                            <label ng-hide="editorEnabled" >
+                                {{todo.name}}
+
+                            </label>
+                            <span class="label label-warning">Open</span>
+                            <span ng-show="editorEnabled">
+                                <input type="text" name="todoName" ng-model="newName" ng-required />    
+                                <button class="btn btn-success btn-xs glyphicon glyphicon-ok" ng-click="todo.name=newName;todo.desc=newDesc;editorEnabled=false"></button>                                
+                            </span>
+                                
+                            <span class="pull-right">
+                                <button ng-click="todo.done = true" class="btn btn-success btn-sm glyphicon glyphicon-arrow-right"></button>  
+                                <button ng-click="newName=todo.name;expand=true;newDesc=todo.desc;editorEnabled=!editorEnabled" class="btn btn-primary btn-sm glyphicon glyphicon-pencil"></button>
+                                <button ng-click="todos.splice(todos.indexOf(todo),1)" class="btn btn-danger btn-sm glyphicon glyphicon-minus-sign"></button> 
+                               
+                            </span>
+                            <div ng-show="expand" class="panel panel-default">                                 
+                                  <div ng-hide="editorEnabled" class="panel-body">
+                                    <small > {{todo.desc}} </small>     
+                                  </div>
+                                  <textarea ng-show="editorEnabled" ng-model="newDesc" class="form-control" rows="3"></textarea>
+                            </div>                                    
+                        </li>
+                    </ul> 
+                 </div>
+            </div>                   
+        </div>
+    
+        <div class="col-md-6">
+            <div class="panel panel-success">
+              <div class="panel-heading">
+                <h3 class="panel-title">Done </h3>
+              </div>
+              <div class="panel-body">
+                <ul class="list-group list-container"  ng-drop="true" ng-drop-success="onDrop($data,todos,true)" >
+                    <li class="list-group-item" ng-drag="true" ng-drag-data="done" ng-drag-success="dropSuccessHandler(todos,done)" ng-repeat="done in todos | filter:{done:true}">
+                          <span ng-hide="expand==true" class="pull-left btn  btn-sm glyphicon glyphicon-plus-sign" ng-click="expand=!expand"></span>
+                          <span ng-show="expand==true" class="pull-left btn  btn-sm glyphicon glyphicon-minus-sign" ng-click="expand=!expand"></span>
+                            <label>
+                                {{done.name}}
+                            </label>
+                            <span class="label label-success">Done</span> 
+
+                         <span class="pull-right">
+                               
+                                <button ng-click="done.done = false" class="btn btn-success btn-sm glyphicon glyphicon-arrow-left"></button>                                  
+                                <button ng-click="todos.splice(todos.indexOf(done),1)" class="btn btn-danger btn-sm glyphicon glyphicon-minus-sign"></button>
+                                                              
+                                
+                         </span>
+                         <div ng-show="expand" class="panel panel-default">                                 
+                                  <div class="panel-body">
+                                    <small > {{done.desc}} </small>     
+                                   </div>                                 
+                         </div> 
+                        
+                    </li>
+                </ul>  
+              </div>
+            </div>        
+        </div>  
+    </div>
+    <div class="col-md-12"> 
+            <div class="row"> 
+       
+                  
+             </div>    
+             <div class="row"> 
+                    <hr />
+                    Model Preview:
+                    <pre>
+                        todos = {{todos}}
+                    </pre>
+         
+            </div>
+    </div>
+</div>

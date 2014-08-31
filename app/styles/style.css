@@ -1,0 +1,16 @@
+﻿.drag-enter
+{
+    background-color: #0099CC;
+}
+
+.on-drag-hover:before {
+  content: 'Drop Here';
+  display: block;
+  color: white;
+  font-size: x-large;
+  font-weight: 800;
+}
+.list-container
+{
+    padding:10px;    
+}

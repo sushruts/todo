@@ -7,6 +7,10 @@ toDoApp.config(["$stateProvider", "$routeProvider", "$urlRouterProvider", "$loca
             controller: "toDoCtrl",
             title: "Home"
         });
+        $routeProvider.when("/test", {
+            templateUrl: "test.html",           
+            title: "Testing"
+        });
     }]);
 
 

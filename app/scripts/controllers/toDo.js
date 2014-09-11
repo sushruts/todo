@@ -1,5 +1,5 @@
 'use strict';
-toDoApp.controller('toDoCtrl', function ($scope) {
+toDoApp.controller('toDoCtrl', function ($scope,flash) {
     $scope.todoName = "";
     $scope.todos = [{
         id: 1,
@@ -58,6 +58,12 @@ toDoApp.controller('toDoCtrl', function ($scope) {
     $scope.onDrop = function ($data, array, status) {
         $data.done = status
         array.push($data);
+
+        flash.pop({
+                    title: 'Done',
+                    body: "Success ...",
+                    type: 'success'
+                });
 
     };
 

@@ -3,3 +3,12 @@
 
 <div>{{msg}} from parent</div>
 </div>
+
+<form name="frmCreatePart">
+    <div  class="form-group   col-md-4 ">
+        <label class="one23-Labels" id="lblMinStock" for="txtMinStck"></label> <span data-ng-show="model.unitOfMeasure!= '' && model.unitOfMeasure != undefined"></span>
+ <span class="errorMessage" id="errMinStckPattern" ng-show="frmCreatePart.minimumstocklevel.$error.intt">(Number range 0 to 99.99)</span>
+
+        <input intt type="text" id="txtMinStck" min="0" class="form-control" ng-model="model.MinimumStockLevel" placeholder="Min. Stock Level" name="minimumstocklevel" pattern-value="4|4" />
+    </div>
+</form>

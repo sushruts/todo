@@ -1,3 +1,145 @@
+toDoApp.directive('fileup', function(FileUploader) {
+    var template = '<div class="drop-box col-md-4" nv-file-over="" over-class="dragover" uploader="uploader" nv-file-drop="">' +
+                                    '<span ng-hide="uploader.queue.length">Drop File Here </span> ' +
+                                    '<div ng-repeat = "item in uploader.queue" >' +
+                                        '<div ng-show = "uploader.isHTML5" ng-thumb = "{ file: file, height: 20, width:20 }" > </div>' +
+                                    '</div> ' +
+                                    '<div ng-show = "uploader.queue.length">' +
+                                        '<span> {{uploader.queue[0].file.name}} </span>' +
+                                        '<span> ' +
+                                            '<div class = "progress col-md-2" style = "margin-bottom: 0;" >' +
+                                                '<div class="progress-bar"  role = "progressbar"' +
+                                                 'ng-style = \'{ "width": uploader.queue[0].progress + "%" }\'> ' +
+                                                '</div> ' +
+                                            '</div>' +
+                                        '</span>' +
+
+                                        '<button type = "button" class ="btn btn-success btn-xs"  ng-click = "uploader.queue[0].upload()"' +
+                                            'ng-disabled = "uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" > ' +
+                                            '<span class = "glyphicon glyphicon-upload" > < /span>' +
+                                        '</button>' +
+                                        '<button type = "button"class = "btn btn-danger btn-xs" ng-click = "uploader.queue[0].remove()"> ' +
+                                            '<span class = "glyphicon glyphicon-trash" > </span> ' +
+                                        '</button>' +
+                                   '</div> {{uploader.queue}} {{file}}' +
+                                '</div> ';
+    return {
+        restrict: 'E', 
+        replace: true,
+        template: template,         
+        controller: function($scope) {
+             $scope.uploader=null;
+             $scope.uploader = new FileUploader({
+                    url: 'abc',
+                    queueLimit: 2,
+                    headers: {
+                        "Authorization-Token": "Janet"
+                    }
+                });
+                console.log($scope.uploader.onAfterAddingFile);
+                $scope.model = "";
+                $scope.file = "";
+
+                $scope.uploader.onAfterAddingFile = function(fileItem) {
+                    if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
+                        $scope.file = $scope.uploader.queue[0]._file;
+                    console.log('ko beta maje me ');
+                };
+                console.log($scope.uploader.onAfterAddingFile);
+
+
+                $scope.uploader.onCompleteAll = function() {
+                    if (!$scope.model.hasError) {
+                        d.resolve(true);
+                        $timeout(function() {
+                            $scope.uploader.clearQueue();
+                        }, 300);
+
+                    } else {
+                        $scope.model.hasError = false;
+                    }
+                    console.log('success')
+                };
+
+                $scope.uploader.onErrorItem = function(item, response, status, headers) {
+                    d.$scopereject(true);
+                    $scope.model.hasError = true;
+                    $timeout(function() {
+                        $scope.uploader.clearQueue();
+                    }, 300);
+                    console.log('error')
+                };
+                $scope.uploader.filters.push({
+                    name: 'imageFilter',
+                    fn: function(item /*{File|FileLikeObject}*/ , options) {
+                        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                    }
+                });
+
+                $scope.$watch('uploader', function(newValue, oldValue) {
+                if (newValue)
+                    console.log("I see a data change!");
+                 });
+        },
+        link: function(scope, element, attributes) {
+            scope.$watch('uploader', function(newValue, oldValue) {
+                if (newValue)
+                    console.log("I see a data change!");
+                 });
+           
+        }
+    }
+});
+
+toDoApp.directive('ngThumb', ['$window', function($window) {
+    var helper = {
+        support: !!($window.FileReader && $window.CanvasRenderingContext2D),
+        isFile: function(item) {
+            return angular.isObject(item) && item instanceof $window.File;
+        },
+        isImage: function(file) {
+            var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    };
+
+    return {
+        restrict: 'A',
+        template: '<canvas/>',
+        link: function(scope, element, attributes) {
+            if (!helper.support) return;
+
+            var params = scope.$eval(attributes.ngThumb);
+
+            if (!helper.isFile(params.file)) return;
+            if (!helper.isImage(params.file)) return;
+
+            var canvas = element.find('canvas');
+            var reader = new FileReader();
+
+            reader.onload = onLoadFile;
+            reader.readAsDataURL(params.file);
+
+            function onLoadFile(event) {
+                var img = new Image();
+                img.onload = onLoadImage;
+                img.src = event.target.result;
+            }
+
+            function onLoadImage() {
+                var width = params.width || this.width / this.height * params.height;
+                var height = params.height || this.height / this.width * params.width;
+                canvas.attr({
+                    width: width,
+                    height: height
+                });
+                canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+            }
+        }
+    };
+}]);
+
 toDoApp.directive('intt', ['$timeout',
     function($timeout) {
         var pattern, regexPattern;
@@ -45,7 +187,7 @@ toDoApp.directive('intt', ['$timeout',
                 }
             }
         };
-       
+
         return {
             require: 'ngModel',
             scope: {
@@ -71,7 +213,7 @@ toDoApp.directive('intt', ['$timeout',
                         ngModel.$setValidity('intt', true);
                         return;
                     }
-                   
+
                     removeTrailingZeros(newValue);
                     regexPattern = createPattern(elem, scope);
                     //logic to not allow to type leading zeros
@@ -89,10 +231,10 @@ toDoApp.directive('intt', ['$timeout',
                         if (arr[0] === '.')
                             scope.ngModel = newValue;
                         else
-                            scope.ngModel = '';                        
+                            scope.ngModel = '';
                         return;
                     }
-                   
+
                 });
                 ngModel.$parsers.unshift(function(value) {
                     if ((parseFloat(scope.max) < parseFloat(value)) || (parseFloat(value) < parseFloat(scope.min))) {

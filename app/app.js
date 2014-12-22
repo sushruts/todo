@@ -1,16 +1,18 @@
 'use strict';
-var toDoApp = angular.module("toDoApp", ['ui.compat', 'ngDraggable']);
-toDoApp.config(["$stateProvider", "$routeProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $routeProvider, $urlRouterProvider, $locationProvide) {
-        $urlRouterProvider.otherwise("/home");
-        $routeProvider.when("/home", {
-            templateUrl: "home.html",
-            controller: "toDoCtrl",
-            title: "Home"
-        });
-        $routeProvider.when("/test", {
-            templateUrl: "test.html",           
-            title: "Testing"
-        });
-    }]);
-
-
+var toDoApp = angular.module("toDoApp", ['ui.compat', 'ngDraggable','angularFileUpload']);
+toDoApp.config(["$stateProvider", "$routeProvider", "$urlRouterProvider", "$locationProvider", function($stateProvider, $routeProvider, $urlRouterProvider, $locationProvide) {
+    $urlRouterProvider.otherwise("/home");
+    $routeProvider.when("/home", {
+        templateUrl: "home.html",
+        controller: "toDoCtrl",
+        title: "Home"
+    });
+    $routeProvider.when("/test", {
+        templateUrl: "test.html",
+        title: "Testing"
+    });
+    $routeProvider.when("/file", {
+        templateUrl: "fileUpload.html",
+        title: "Testing"
+    });
+}]);

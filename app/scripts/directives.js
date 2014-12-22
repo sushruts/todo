@@ -1,8 +1,9 @@
 toDoApp.directive('fileup', function(FileUploader) {
     var template = '<div class="drop-box col-md-4" nv-file-over="" over-class="dragover" uploader="uploader" nv-file-drop="">' +
-                                    '<span ng-hide="uploader.queue.length">Drop File Here </span> ' +
+                                    '<span ng-hide="uploader.queue.length || existingImage">Drop File Here </span> ' +
+                                    '<img ng-hide="uploader.queue.length" style="width:50px;height:50px" ng-src="{{existingImage}}"/>'+
                                     '<div ng-repeat = "item in uploader.queue" >' +
-                                        '<div ng-show = "uploader.isHTML5" ng-thumb = "{ file: file, height: 20, width:20 }" > </div>' +
+                                        '<div ng-show = "uploader.isHTML5" ng-thumb = "{ file: file, height: 100 }" > </div>' +
                                     '</div> ' +
                                     '<div ng-show = "uploader.queue.length">' +
                                         '<span> {{uploader.queue[0].file.name}} </span>' +
@@ -16,18 +17,26 @@ toDoApp.directive('fileup', function(FileUploader) {
 
                                         '<button type = "button" class ="btn btn-success btn-xs"  ng-click = "uploader.queue[0].upload()"' +
                                             'ng-disabled = "uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" > ' +
-                                            '<span class = "glyphicon glyphicon-upload" > < /span>' +
+                                            '<span class = "glyphicon glyphicon-upload" > </span>' +
                                         '</button>' +
                                         '<button type = "button"class = "btn btn-danger btn-xs" ng-click = "uploader.queue[0].remove()"> ' +
                                             '<span class = "glyphicon glyphicon-trash" > </span> ' +
                                         '</button>' +
-                                   '</div> {{uploader.queue}} {{file}}' +
+                                   '</div>' +
+                                   '<div class="row">' +
+                                        '<div>' +    
+                                            '<input type="file" id="uplFile" ' +
+                                              'nv-file-select="" uploader="uploader"' +
+                                              'image="image" />' +  
+                                            '</div>' +
+                                    '</div>' +
                                 '</div> ';
     return {
         restrict: 'E', 
         replace: true,
         template: template,         
-        controller: function($scope) {
+        controller: function($scope,$timeout,$q) {
+           var d = $q.defer();
              $scope.uploader=null;
              $scope.uploader = new FileUploader({
                     url: 'abc',
@@ -36,16 +45,17 @@ toDoApp.directive('fileup', function(FileUploader) {
                         "Authorization-Token": "Janet"
                     }
                 });
-                console.log($scope.uploader.onAfterAddingFile);
+               
                 $scope.model = "";
                 $scope.file = "";
-
+                
                 $scope.uploader.onAfterAddingFile = function(fileItem) {
+                    console.log('ko beta maje me ');
                     if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
                         $scope.file = $scope.uploader.queue[0]._file;
-                    console.log('ko beta maje me ');
+                    console.log($scope.uploader.queue.length);
                 };
-                console.log($scope.uploader.onAfterAddingFile);
+               
 
 
                 $scope.uploader.onCompleteAll = function() {
@@ -54,20 +64,22 @@ toDoApp.directive('fileup', function(FileUploader) {
                         $timeout(function() {
                             $scope.uploader.clearQueue();
                         }, 300);
+                        console.log('success')
 
                     } else {
                         $scope.model.hasError = false;
                     }
-                    console.log('success')
+                   
                 };
 
                 $scope.uploader.onErrorItem = function(item, response, status, headers) {
-                    d.$scopereject(true);
+                    
                     $scope.model.hasError = true;
                     $timeout(function() {
                         $scope.uploader.clearQueue();
                     }, 300);
                     console.log('error')
+                    // d.reject(true);
                 };
                 $scope.uploader.filters.push({
                     name: 'imageFilter',
@@ -77,16 +89,11 @@ toDoApp.directive('fileup', function(FileUploader) {
                     }
                 });
 
-                $scope.$watch('uploader', function(newValue, oldValue) {
-                if (newValue)
-                    console.log("I see a data change!");
-                 });
+                
         },
-        link: function(scope, element, attributes) {
-            scope.$watch('uploader', function(newValue, oldValue) {
-                if (newValue)
-                    console.log("I see a data change!");
-                 });
+        link: function($scope, element, attributes) {
+            $scope.existingImage = attributes.image;
+            console.log(attributes);
            
         }
     }

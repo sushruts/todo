@@ -1,3 +1,4 @@
+// refer : https://github.com/alexk111/ngImgCrop
 toDoApp.directive('fileup', function(FileUploader) {
     var template = '<div class="drop-box col-md-4" nv-file-over="" over-class="dragover" uploader="uploader" nv-file-drop="">' +
                                     '<span ng-hide="uploader.queue.length || existingImage">Drop File Here </span> ' +
@@ -5,6 +6,13 @@ toDoApp.directive('fileup', function(FileUploader) {
                                     '<div ng-repeat = "item in uploader.queue" >' +
                                         '<div ng-show = "uploader.isHTML5" ng-thumb = "{ file: file, height: 100 }" > </div>' +
                                     '</div> ' +
+
+                                    '<div class="cropArea">' +
+                                        '<img-crop image="myImage" area-type="square" result-image="myCroppedImage"></img-crop>' +
+                                    '</div>' +
+                                    '<div>Cropped Image:</div>' +
+                                    '<div><img ng-src="{{myCroppedImage}}" /></div>' +
+
                                     '<div ng-show = "uploader.queue.length">' +
                                         '<span> {{uploader.queue[0].file.name}} </span>' +
                                         '<span> ' +
@@ -48,11 +56,39 @@ toDoApp.directive('fileup', function(FileUploader) {
                
                 $scope.model = "";
                 $scope.file = "";
-                
+
+                $scope.myImage='';
+                $scope.myCroppedImage='';
+
+                var handleFileSelect=function(file) {   
+                 
+                  var reader = new FileReader();
+                  reader.onload = function (evt) {
+                    $scope.$apply(function($scope){
+                      $scope.myImage=evt.target.result;
+                    });
+                  };
+                  reader.readAsDataURL(file);
+                };
+                // $scope.$watch('uploader.queue', function(newValue, oldValue) {
+                //     test($scope.uploader);
+                //     // handleFileSelect();
+                // },true);
+
+                var test=function(evt){
+
+                    console.log(evt);
+                }
+                angular.element(document.querySelector('#uplFile')).on('change',test);
+               
+                        
                 $scope.uploader.onAfterAddingFile = function(fileItem) {
+                     test($scope.uploader);
                     console.log('ko beta maje me ');
                     if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
                         $scope.file = $scope.uploader.queue[0]._file;
+                        handleFileSelect($scope.file);
+                       
                     console.log($scope.uploader.queue.length);
                 };
                

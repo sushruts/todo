@@ -4,7 +4,8 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
     var uploader = null;
     return {
         restrict: "E",
-        replace: true,
+        replace: true, 
+        templateUrl:'templates/upload.html',
         controller: function($scope, $timeout, $q) {
             var d = $q.defer();
             $scope.uploader = new FileUploader({
@@ -15,11 +16,9 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                 }
             });
 
-
             $scope.model = "";
             $scope.file = "";
             $scope.croppedImage = null;
-
             $scope.myImage = null;
 
 
@@ -44,7 +43,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
             };
 
 
-            
+
             // https://gist.github.com/brianfeister/56a1c6c77cd5928a1c53
             /**
              * Upload Blob (cropped image) instead of file.
@@ -53,9 +52,8 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
              *   https://github.com/nervgh/angular-file-upload/issues/208
              */
             $scope.uploader.onBeforeUploadItem = function(item) {
-                var blob = dataURItoBlob($scope.croppedImage);                
+                var blob = dataURItoBlob($scope.croppedImage);
                 item._file = blob;
-                console.log($scope.croppedImage);
             };
 
             /**
@@ -77,7 +75,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                 });
             };
 
-          
+
 
             $scope.uploader.onAfterAddingFile = function(fileItem) {
                 if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
@@ -92,7 +90,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                         }
                     });
                 };
-                reader.readAsDataURL($scope.file);              
+                reader.readAsDataURL($scope.file);
                 console.log($scope.uploader.queue[0]);
             };
 
@@ -127,44 +125,8 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                     return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
                 }
             });
-
-
         },
-        compile: function(element, attrs) {
-            var modelAccessor = $parse(attrs.ngModel);
-
-            var html = '<div class="drop-box col-md-4"  nv-file-over over-class="dragover" uploader="uploader" >' +
-                '<span ng-hide="uploader.queue.length">Drop File Here </span> ' +
-                '<div ng-show = "uploader.queue.length">' +
-                '<button type = "button" class ="btn btn-success btn-xs"  ng-click = "uploader.queue[0].upload()"' +
-                'ng-disabled = "uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" > ' +
-                '<span class = "glyphicon glyphicon-upload" > </span>' +
-                '</button>' +
-                '<button type = "button"class = "btn btn-danger btn-xs" ng-click = "uploader.queue[0].remove()"> ' +
-                '<span class = "glyphicon glyphicon-trash" > </span> ' +
-                '</button>' +
-                '</div>' +
-                '<div class="row">' +
-                '<div>' +
-                '<input type="file" id="uplFile" ' +
-                'nv-file-select="" uploader="uploader"' +
-                'image="image" />' +
-                '</div>' +
-                '</div>' +
-                '<div  img-crop-upload class="img-container">' +
-                '<img  ng-show="options.cropperEnabled" ng-show="myImage!=null" src="{{myImage}}"/>' +
-                '</div>' +
-                '<div ng-show="!options.cropperEnabled">' +
-                '<img style="height:auto;width:{{options.width}}px" ng-show="myImage!=null" src="{{myImage}}"/>' +
-                '</div>' +
-                '<button class="btn btn-info" id="getData" ng-click="getCroppedImage()" type="button">Get Data </button>' +
-                '<div class="preview preview-md">' +
-                '<img ng-show="croppedImage!=null" src="{{croppedImage}}"/>' +
-                '</div>' +
-                '</div> ';
-            var newElem = $(html);
-            element.replaceWith(newElem);
-
+        compile: function(element, attrs) {   
             return function(scope, element, attrs, controller) {
                 if (scope.options.cropperEnabled) {
                     $image = $(element).find(".img-container > img").cropper(
@@ -172,7 +134,6 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                     );
                 }
             };
-
         },
         link: function($scope, element, attributes) {
             $scope.options = attributes.options;

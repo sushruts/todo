@@ -1,0 +1,33 @@
+<div class="drop-box col-md-4" nv-file-over over-class="dragover" uploader="uploader"> 
+    <span ng-hide="uploader.queue.length">Drop File Here </span> 
+
+    <div ng-show="uploader.queue.length">
+        <button type="button" class="btn btn-success btn-xs" ng-click="uploader.queue[0].upload()" ng-disabled="uploader.queue[0].isReady || uploader.squeue[0].isUploading || uploader.queue[0].isSuccess"> 
+            <span class="glyphicon glyphicon-upload"> </span>
+        </button>
+
+        <button type="button" class="btn btn-danger btn-xs" ng-click="uploader.queue[0].remove()">
+            <span class="glyphicon glyphicon-trash"> </span> 
+        </button>
+    </div>
+
+    <div class="row">
+        <div>
+            <input type="file" id="uplFile" nv-file-select="" uploader="uploader" image="image" />
+        </div>
+    </div>
+
+    <div img-crop-upload class="img-container">
+         <img ng-show="options.cropperEnabled" ng-show="myImage!=null" src="{{myImage}}" />
+    </div>
+
+    <div ng-show="!options.cropperEnabled">
+        <img style="height:auto;width:{{options.width}}px" ng-show="myImage!=null" src="{{myImage}}" />
+    </div>
+
+    <button class="btn btn-info" id="getData" ng-click="getCroppedImage()" type="button">Get Data </button>
+
+    <div class="preview preview-md">
+        <img ng-show="croppedImage!=null" src="{{croppedImage}}" />
+    </div>
+</div>

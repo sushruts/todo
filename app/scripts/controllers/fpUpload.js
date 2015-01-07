@@ -1,6 +1,6 @@
 toDoApp.controller('fileCtrl', function($scope, $timeout) {
 	$scope.options = {
-		cropperEnabled: false,
+		cropperEnabled: true,
 		width: 390,
 		height: "auto",
 		cropper: {
@@ -13,7 +13,7 @@ toDoApp.controller('fileCtrl', function($scope, $timeout) {
 				height: 360
 			},
 			done: function(data) {
-				console.log(data);
+				
 			}
 
 		}

@@ -15,7 +15,6 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                 }
             });
 
-            console.log($scope.uploader);
 
             $scope.model = "";
             $scope.file = "";
@@ -40,21 +39,62 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
 
             $scope.getCroppedImage = function() {
                 $scope.croppedImage = $image.cropper("getDataURL");
+
+                console.log($image.cropper("getData", true));
+            };
+
+
+            
+            // https://gist.github.com/brianfeister/56a1c6c77cd5928a1c53
+            /**
+             * Upload Blob (cropped image) instead of file.
+             * @see
+             *   https://developer.mozilla.org/en-US/docs/Web/API/FormData
+             *   https://github.com/nervgh/angular-file-upload/issues/208
+             */
+            $scope.uploader.onBeforeUploadItem = function(item) {
+                var blob = dataURItoBlob($scope.croppedImage);                
+                item._file = blob;
                 console.log($scope.croppedImage);
             };
 
-
-            $scope.uploader.onAfterAddingFile = function(fileItem) {
-                // test($scope.uploader);
-
-                console.log('ko beta maje me ');
-                if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
-                $scope.file = $scope.uploader.queue[0]._file;
-                handleFileSelect($scope.file);
-
-                console.log($scope.file);
+            /**
+             * Converts data uri to Blob. Necessary for uploading.
+             * @see
+             *   http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata
+             * @param  {String} dataURI
+             * @return {Blob}
+             */
+            var dataURItoBlob = function(dataURI) {
+                var binary = atob(dataURI.split(',')[1]);
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                var array = [];
+                for (var i = 0; i < binary.length; i++) {
+                    array.push(binary.charCodeAt(i));
+                }
+                return new Blob([new Uint8Array(array)], {
+                    type: mimeString
+                });
             };
 
+          
+
+            $scope.uploader.onAfterAddingFile = function(fileItem) {
+                if ($scope.uploader.queue.length > 1) $scope.uploader.queue[0].remove();
+                $scope.file = $scope.uploader.queue[0]._file;
+
+                var reader = new FileReader();
+                reader.onload = function(evt) {
+                    $scope.$apply(function($scope) {
+                        $scope.myImage = evt.target.result;
+                        if ($scope.options.cropperEnabled) {
+                            $image.cropper("reset", true).cropper("replace", $scope.myImage);
+                        }
+                    });
+                };
+                reader.readAsDataURL($scope.file);              
+                console.log($scope.uploader.queue[0]);
+            };
 
 
             $scope.uploader.onCompleteAll = function() {
@@ -94,32 +134,34 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
             var modelAccessor = $parse(attrs.ngModel);
 
             var html = '<div class="drop-box col-md-4"  nv-file-over over-class="dragover" uploader="uploader" >' +
-                            '<span ng-hide="uploader.queue.length">Drop File Here </span> ' +
-                            '<div ng-show = "uploader.queue.length">' +
-                                '<button type = "button" class ="btn btn-success btn-xs"  ng-click = "uploader.queue[0].upload()"' +
-                                    'ng-disabled = "uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" > ' +
-                                    '<span class = "glyphicon glyphicon-upload" > </span>' +
-                                '</button>' +
-                                '<button type = "button"class = "btn btn-danger btn-xs" ng-click = "uploader.queue[0].remove()"> ' +
-                                    '<span class = "glyphicon glyphicon-trash" > </span> ' +
-                                '</button>' +
-                            '</div>' +
-                            '<div class="row">' +
-                                '<div>' +
-                                    '<input type="file" id="uplFile" ' +
-                                    'nv-file-select="" uploader="uploader"' +
-                                    'image="image" />' +
-                                '</div>' +
-                            '</div>' +
-                            '<div img-crop-upload class="img-container">' +
-                                '<img  ng-if="options.cropperEnabled" ng-show="myImage!=null" src="{{myImage}}"/>' +
-                                '<img  ng-if="!options.cropperEnabled" style="height:auto;width:{{options.width}}px" ng-show="myImage!=null" src="{{myImage}}"/>' +
-                            '</div>' +
-                            '<button class="btn btn-info" id="getData" ng-click="getCroppedImage()" type="button">Get Data </button>' +
-                                '<div class="preview preview-md">' +
-                                    '<img ng-show="croppedImage!=null" src="{{croppedImage}}"/>' +
-                                '</div>' +
-                        '</div> ';
+                '<span ng-hide="uploader.queue.length">Drop File Here </span> ' +
+                '<div ng-show = "uploader.queue.length">' +
+                '<button type = "button" class ="btn btn-success btn-xs"  ng-click = "uploader.queue[0].upload()"' +
+                'ng-disabled = "uploader.queue[0].isReady || uploader.queue[0].isUploading || uploader.queue[0].isSuccess" > ' +
+                '<span class = "glyphicon glyphicon-upload" > </span>' +
+                '</button>' +
+                '<button type = "button"class = "btn btn-danger btn-xs" ng-click = "uploader.queue[0].remove()"> ' +
+                '<span class = "glyphicon glyphicon-trash" > </span> ' +
+                '</button>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div>' +
+                '<input type="file" id="uplFile" ' +
+                'nv-file-select="" uploader="uploader"' +
+                'image="image" />' +
+                '</div>' +
+                '</div>' +
+                '<div  img-crop-upload class="img-container">' +
+                '<img  ng-show="options.cropperEnabled" ng-show="myImage!=null" src="{{myImage}}"/>' +
+                '</div>' +
+                '<div ng-show="!options.cropperEnabled">' +
+                '<img style="height:auto;width:{{options.width}}px" ng-show="myImage!=null" src="{{myImage}}"/>' +
+                '</div>' +
+                '<button class="btn btn-info" id="getData" ng-click="getCroppedImage()" type="button">Get Data </button>' +
+                '<div class="preview preview-md">' +
+                '<img ng-show="croppedImage!=null" src="{{croppedImage}}"/>' +
+                '</div>' +
+                '</div> ';
             var newElem = $(html);
             element.replaceWith(newElem);
 
@@ -134,7 +176,6 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
         },
         link: function($scope, element, attributes) {
             $scope.options = attributes.options;
-            console.log(attributes);
 
         }
     };

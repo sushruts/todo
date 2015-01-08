@@ -1,11 +1,12 @@
 // http://fengyuanchen.github.io/cropper/#options
-toDoApp.directive('cropupload', function($parse, FileUploader) {
+toDoApp.directive('cropupload', function($parse, FileUploader, ngDialog) {
     var $image = null;
     var uploader = null;
+    var cropperModalId = "#cropperModal";
     return {
         restrict: "E",
-        replace: true, 
-        templateUrl:'templates/upload.html',
+        replace: true,
+        templateUrl: 'templates/upload.html',
         controller: function($scope, $timeout, $q) {
             var d = $q.defer();
             $scope.uploader = new FileUploader({
@@ -92,6 +93,9 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                 };
                 reader.readAsDataURL($scope.file);
                 console.log($scope.uploader.queue[0]);
+
+                // http://getbootstrap.com/javascript/#modals
+                $(cropperModalId).modal('show');
             };
 
 
@@ -126,7 +130,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                 }
             });
         },
-        compile: function(element, attrs) {   
+        compile: function(element, attrs) {
             return function(scope, element, attrs, controller) {
                 if (scope.options.cropperEnabled) {
                     $image = $(element).find(".img-container > img").cropper(
@@ -134,10 +138,6 @@ toDoApp.directive('cropupload', function($parse, FileUploader) {
                     );
                 }
             };
-        },
-        link: function($scope, element, attributes) {
-            $scope.options = attributes.options;
-
         }
     };
 });

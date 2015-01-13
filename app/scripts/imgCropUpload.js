@@ -1,13 +1,24 @@
 // http://fengyuanchen.github.io/cropper/#options
-toDoApp.directive('cropupload', function($parse, FileUploader, ngDialog) {
+toDoApp.directive('cropupload', function($parse, FileUploader, $timeout, $q) {
     var $image = null;
     var uploader = null;
     var cropperModalId = "#cropperModal";
     return {
         restrict: "E",
         replace: true,
+        scope:{
+            cropperEnabled:'=',
+            width:'=',
+            height:'=',
+            options:'=',
+            model : "@",
+            file:"@",
+            croppedImage : "@",
+            myImage : "@"
+
+        },
         templateUrl: 'templates/upload.html',
-        controller: function($scope, $timeout, $q) {
+        controller: function($scope,$attrs) {
             var d = $q.defer();
             $scope.uploader = new FileUploader({
                 url: 'abc',
@@ -16,20 +27,14 @@ toDoApp.directive('cropupload', function($parse, FileUploader, ngDialog) {
                     "Authorization-Token": "Janet"
                 }
             });
-
-            $scope.model = "";
-            $scope.file = "";
-            $scope.croppedImage = null;
-            $scope.myImage = null;
-
-
+            
             var handleFileSelect = function(file) {
 
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     $scope.$apply(function($scope) {
                         $scope.myImage = evt.target.result;
-                        if ($scope.options.cropperEnabled) {
+                        if ($scope.cropperEnabled) {
                             $image.cropper("reset", true).cropper("replace", $scope.myImage);
                         }
                     });
@@ -86,7 +91,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader, ngDialog) {
                 reader.onload = function(evt) {
                     $scope.$apply(function($scope) {
                         $scope.myImage = evt.target.result;
-                        if ($scope.options.cropperEnabled) {
+                        if ($scope.cropperEnabled) {
                             $image.cropper("reset", true).cropper("replace", $scope.myImage);
                         }
                     });
@@ -132,7 +137,7 @@ toDoApp.directive('cropupload', function($parse, FileUploader, ngDialog) {
         },
         compile: function(element, attrs) {
             return function(scope, element, attrs, controller) {
-                if (scope.options.cropperEnabled) {
+                if (scope.cropperEnabled) {
                     $image = $(element).find(".img-container > img").cropper(
                         scope.options.cropper
                     );

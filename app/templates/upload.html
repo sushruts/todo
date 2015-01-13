@@ -17,8 +17,8 @@
         </div>
     </div>    
 
-    <div ng-show="!options.cropperEnabled">
-        <img style="height:auto;width:{{options.width}}px" ng-show="myImage!=null" src="{{myImage}}" />
+    <div ng-show="!cropperEnabled">
+        <img style="height:auto;width:{{width}}px" ng-show="myImage!=null" ng-src="{{myImage}}" />
     </div>
 
 
@@ -33,15 +33,16 @@
           <div class="modal-body">
             
             <div class="img-container">
-                 <img ng-show="options.cropperEnabled" ng-show="myImage!=null" src="{{myImage}}" />
+                 <img ng-show="cropperEnabled" ng-show="myImage!=null" ng-src="{{myImage}}" />
             </div>
 
-            <button class="btn btn-info" id="getData" ng-click="getCroppedImage()" type="button">Get Data </button>
+            
 
           </div>
           <div class="modal-footer">
+          <button class="btn btn-info" id="getData" ng-click="getCroppedImage()" data-dismiss="modal" type="button">Get Data </button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
           </div>
         </div>
       </div>

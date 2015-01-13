@@ -1,8 +1,8 @@
 toDoApp.controller('fileCtrl', function($scope, $timeout) {
 	$scope.options = {
-		cropperEnabled: true,
-		width: 390,
-		height: "auto",
+		//cropperEnabled: true,
+		//width: 390,
+		//height: "auto",
 		cropper: {
 
 			autoCrop: true,

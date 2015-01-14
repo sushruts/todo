@@ -6,46 +6,39 @@ toDoApp.directive('cropupload', function($parse, FileUploader, $timeout, $q) {
     return {
         restrict: "E",
         replace: true,
-        scope:{
-            cropperEnabled:'=',
-            width:'=',
-            height:'=',
-            options:'=',
-            model : "@",
-            file:"@",
-            croppedImage : "@",
-            myImage : "@"
-
+        scope: {
+            cropperEnabled: '=',
+            width: '=',
+            height: '=',
+            options: '=',
+            model: "@",
+            file: "@",
+            croppedImage: "@",
+            myImage: "@",
+            aggrId: "="
         },
         templateUrl: 'templates/upload.html',
-        controller: function($scope,$attrs) {
+        controller: function($scope, $attrs) {
             var d = $q.defer();
             $scope.uploader = new FileUploader({
                 url: 'abc',
                 queueLimit: 2,
                 headers: {
                     "Authorization-Token": "Janet"
-                }
+                },
+                formData: [{
+                    "id": $scope.aggrId
+                }]
             });
-            
-            var handleFileSelect = function(file) {
 
-                var reader = new FileReader();
-                reader.onload = function(evt) {
-                    $scope.$apply(function($scope) {
-                        $scope.myImage = evt.target.result;
-                        if ($scope.cropperEnabled) {
-                            $image.cropper("reset", true).cropper("replace", $scope.myImage);
-                        }
-                    });
-                };
-                reader.readAsDataURL(file);
-            };
+      
 
-            $scope.getCroppedImage = function() {
+            $scope.getCroppedImage = function(item) {
                 $scope.croppedImage = $image.cropper("getDataURL");
 
-                console.log($image.cropper("getData", true));
+                // console.log('cropped image set ');
+                // item.croppedImage = $scope.croppedImage;
+                // console.log(item);
             };
 
 
@@ -58,8 +51,21 @@ toDoApp.directive('cropupload', function($parse, FileUploader, $timeout, $q) {
              *   https://github.com/nervgh/angular-file-upload/issues/208
              */
             $scope.uploader.onBeforeUploadItem = function(item) {
-                var blob = dataURItoBlob($scope.croppedImage);
-                item._file = blob;
+
+                var x = item._file;
+                console.log(x);
+
+
+                var blob = dataURItoBlob($scope.croppedImage);                
+                console.log('final cropped image');
+               
+               item._file=blob;
+                
+               
+                console.log(blob);
+
+
+
             };
 
             /**

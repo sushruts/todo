@@ -1,4 +1,5 @@
 toDoApp.controller('fileCtrl', function($scope, $timeout) {
+	$scope.aggrId="1234";
 	$scope.options = {
 		//cropperEnabled: true,
 		//width: 390,

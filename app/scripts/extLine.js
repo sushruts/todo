@@ -94,7 +94,7 @@ Chart.CustomScale = Chart.Scale.extend({
 
                 ctx.textAlign = (isRotated) ? "right" : "center";
                 ctx.textBaseline = (isRotated) ? "middle" : "top";
-                ctx.fillText(label, 0, 0);
+                // ctx.fillText(label, 0, 0);
                 ctx.restore();
 
             }, this);

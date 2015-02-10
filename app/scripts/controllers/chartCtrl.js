@@ -132,7 +132,7 @@ toDoApp.controller('chartCtrl', function($scope, flash) {
 	var xd=[]
 	var max= Math.max.apply(null, yd);
 	var yScaleStepWidth= Math.ceil(max / step)
-	var xScaleStepWidth= Math.ceil(300 / step)
+	var xScaleStepWidth= Math.ceil(300 / 2)
 
 	for (e=0;e<=8;e++){
 		var temp=[];
@@ -144,7 +144,7 @@ toDoApp.controller('chartCtrl', function($scope, flash) {
 	console.log(yd);
 	$scope.data = {
 		data2: randomScale(300),
-		labels:xd,
+		labels:randomScale(300),
 		labelsFilter: function (index) {
         return (index + 1) % 5 !== 0;
    		 },

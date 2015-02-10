@@ -1,4 +1,4 @@
-<div class="panel panel-warning panel-heading">This is content Page
+<!-- <div class="panel panel-warning panel-heading">This is content Page
     <div>{{testMSG}} from local</div>
 
 <div>{{msg}} from parent</div>
@@ -11,4 +11,20 @@
 
         <input intt type="text" id="txtMinStck" min="0" class="form-control" ng-model="model.MinimumStockLevel" placeholder="Min. Stock Level" name="minimumstocklevel" pattern-value="4|4" />
     </div>
-</form>
+</form> -->
+
+<div ng-controller="testCtrl" class="container" ng-init="expand=false">
+     <div class="row">  
+        <div class="col-md-12">   
+            <div class="well well-sm">
+            {{foo}}
+                  	<select ng-change="ok(foo)" chosen multiple oninput="getdata" allow-single-deselect="true" data-placeholder="Choose Your Own Adventure"
+						no-results-text="'Tough luck'" ng-model="foo" 
+						ng-options="cl.clientName for cl in optionsFromQuery"
+						style="width:200px;height:50px">
+						<option value=""></option>
+					</select>          
+            </div>
+        </div>              
+    </div>
+</div>

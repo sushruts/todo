@@ -4,10 +4,11 @@ toDoApp.controller('testCtrl', function($q, $scope, query, $timeout) {
 		console.log(s);
 
 	}
-	$scope.getdata = function(q) {		
+	$scope.getdata = function(q,mdl) {		
 		var promise = query.loadData(q,'clientName')
 		promise.then(function(data) {
 			// console.log(data);
+			data=data.concat(mdl);
 			$scope.optionsFromQuery = data;		
 		}, function(reason) {
 

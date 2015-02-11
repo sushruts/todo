@@ -60,9 +60,9 @@
               var inputElem = $(chosen.container).find('input');
               inputElem.bind('keyup', function () {
                   var inputText=inputElem.val()   
-
+                  console.log();
                    scope.$apply(function(self) {
-                    self[attr.oninput](inputText);
+                    self[attr.oninput](inputText,ngModel.$viewValue);
                   });                                 
                   // scope.$apply(attr.oninput); 
             });

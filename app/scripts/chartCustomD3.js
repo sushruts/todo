@@ -57,12 +57,22 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                 };
                 this.generateGraph = function() {
 
+                    var lineData = [ { "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
+                                    { "x": 2012,  "y": 4159130}, { "x": 2013,  "y": 2402070},
+                                   { "x": 2014,  "y": 2704659}];
+                     var lineData2 = [ { "x": 2010,   "y": 889342},  { "x": 2011,  "y": 520483},
+                                    { "x": 2012,  "y": 415130}, { "x": 2013,  "y": 242070},
+                                   { "x": 2014,  "y": 270459}];               
+
+                         
+
                     //d3 specific coding
+                    var groupSpacing = 2;
                     var margin = {
                             top: 20,
-                            right: 20,
+                            right: 50,
                             bottom: 30,
-                            left: 40
+                            left: 80
                         },
                         width = 960 - margin.left - margin.right,
                         height = 500 - margin.top - margin.bottom;
@@ -71,7 +81,6 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                         .rangeRoundBands([0, width], .1);
 
                     var x1 = d3.scale.ordinal();
-
                     var y = d3.scale.linear()
                         .range([height, 0]);
 
@@ -85,7 +94,7 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                     var yAxis = d3.svg.axis()
                         .scale(y)
                         .orient("left")
-                        .tickFormat(d3.format(".2s"));
+                        .tickFormat(d3.format(".2"));
 
                     var svg = d3.select(this.element).append("svg")
                         .attr("width", width + margin.left + margin.right)
@@ -98,6 +107,8 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             return key !== "Year";
                         });
 
+                        console.log(ageNames);
+
                         data.forEach(function(d) {
                             d.ages = ageNames.map(function(name) {
                                 return {
@@ -107,9 +118,12 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             });
                         });
 
+
                         x0.domain(data.map(function(d) {
                             return d.Year;
                         }));
+
+
                         x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
                         y.domain([0, d3.max(data, function(d) {
                             return d3.max(d.ages, function(d) {
@@ -117,18 +131,18 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             });
                         })]);
 
-                         svg.selectAll(".state")
+                        svg.selectAll(".state")
                             .data(data)
                             .enter().append("rect")
                             .attr("x", 0)
                             .attr("y", 0)
-                            .attr("width", 16 * 7)
+                            .attr("width", 16 * 7 * groupSpacing)
                             .attr("height", height)
                             .attr("class", "g")
-                            .attr("transform", function(d,i) {                               
-                                    return "translate(" + x0(d.Year) + ",0)";    
-                            }).style("fill", function(d,i) {
-                                if (i%2==0)
+                            .attr("transform", function(d, i) {
+                                return "translate(" + x0(d.Year) + ",0)";
+                            }).style("fill", function(d, i) {
+                                if (i % 2 == 0)
                                     return "#fff";
                                 else
                                     return "#f8f8f8";
@@ -148,7 +162,7 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             .attr("y", this.yaxisPos)
                             .attr("dy", ".71em")
                             .style("text-anchor", "end")
-                            .text(this.yaxisName);                      
+                            .text(this.yaxisName);
 
 
                         var state = svg.selectAll(".state")
@@ -159,16 +173,15 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                                 return "translate(" + x0(d.Year) + ",0)";
                             });
 
-                       
-
 
 
                         state.selectAll("rect")
                             .data(function(d) {
+
                                 return d.ages;
                             })
                             .enter().append("rect")
-                            .attr("width", x1.rangeBand())
+                            .attr("width", x1.rangeBand() / groupSpacing)
                             .attr("x", function(d) {
                                 return x1(d.name);
                             })
@@ -182,6 +195,26 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                                 return color(d.name);
                             })
 
+
+                    
+                        var lineFunction = d3.svg.line()
+                             .x(function(d) { return x0(d.x);})
+                             .y(function(d) { return y(d.y); })
+                             .interpolate("step-after");  
+
+                        var lineGraph = svg.append("path")
+                            .attr("d", lineFunction(lineData))
+                            .style("stroke-dasharray", ("7, 7"))
+                            .attr("stroke", "green")
+                            .attr("stroke-width", 2)                             
+                            .attr("fill", "none");
+
+                         var lineGraph2 = svg.append("path")
+                            .attr("d", lineFunction(lineData2))
+                            .style("stroke-dasharray", ("7, 7"))
+                            .attr("stroke", "green")
+                            .attr("stroke-width", 2)                             
+                            .attr("fill", "none");
 
 
                     }.bind(this));

@@ -32,6 +32,7 @@
         require: '?ngModel',
         terminal: true,
         link: function(scope, element, attr, ngModel) {
+           var inputText,inputElem;
           var chosen, defaultText, disableWithMessage, empty, initOrUpdate, match, options, origRender, removeEmptyMessage, startLoading, stopLoading, valuesExpr, viewWatch;
           element.addClass('localytics-chosen');
           options = scope.$eval(attr.chosen) || {};
@@ -57,12 +58,12 @@
 
               //for key input
               console.log('hh');
-              var inputElem = $(chosen.container).find('input');
+              inputElem = $(chosen.container).find('input');
               inputElem.bind('keyup', function () {
-                  var inputText=inputElem.val()   
-                  console.log();
-                   scope.$apply(function(self) {
+                  inputText=inputElem.val()  
+                  scope.$apply(function(self) {
                     self[attr.oninput](inputText,ngModel.$viewValue);
+                    console.log(inputText);
                   });                                 
                   // scope.$apply(attr.oninput); 
             });
@@ -75,7 +76,7 @@
             return element.attr('data-placeholder', defaultText);
           };
           disableWithMessage = function() {
-            empty = true;
+            empty = true;         
             return element.attr('data-placeholder', chosen.results_none_found).attr('disabled', true).trigger('chosen:updated');
           };
           if (ngModel) {
@@ -98,6 +99,7 @@
             // return element.trigger('chosen:updated');
           });
           if (attr.ngOptions && ngModel) {
+
             match = attr.ngOptions.match(NG_OPTIONS_REGEXP);
             valuesExpr = match[7];
             console.log(valuesExpr);

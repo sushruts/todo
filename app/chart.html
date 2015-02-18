@@ -1,6 +1,36 @@
-<div ng-controller="chartCtrl">
+<style>
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
+
+<div >
 	 <div class="col-md-6">
-	 	<canvas tc-chartjs-line2 chart-data="data" chart-options="options"></canvas>
+	 	<!-- <canvas tc-chartjs-line2 chart-data="data" chart-options="options"></canvas> -->
+
+	 	<div id="d3groupbar" angulard3-groupbar-chart datajson="'data/barSample.json'"
+                    xaxis-name = ""
+                    xaxis-pos = ""
+                    yaxis-name = ""
+                    yaxis-pos = "8"
+                    d3-format= "">
+		<!-- angular directive is angulard3-groupbar-chart -->
+		<!-- directive variables are xaxis-name,yaxis-name,xaxis-pos,yaxis-pos,y axis data format(d3-format)
+		and finally the datajson variable which is holding the external data source -->
+		</div
 	 </div>    
 </div>
 

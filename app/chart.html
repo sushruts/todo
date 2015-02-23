@@ -15,22 +15,74 @@
   display: none;
 }
 
+
+.grid .tick {
+	stroke: lightgrey;
+	opacity: 0.7;
+	shape-rendering: crispEdges;
+}
+ 
+.grid path {
+	stroke-width: 0;
+}
+ 
+.axis path {
+	fill: none;
+	stroke: #bbb;
+	shape-rendering: crispEdges;
+}
+ 
+.axis text {
+	fill: #555;
+}
+ 
+.axis line {	
+	stroke: #e7e7e7;
+	shape-rendering: crispEdges;
+}
+ 
+.axis .axis-label {
+	font-size: 14px;
+}
+ 
+.line {
+	fill: none;
+	stroke-width: 1.5px;
+}
+ 
+.dot {
+	/* consider the stroke-with the mouse detect radius? */
+	stroke: transparent;
+	stroke-width: 10px;  
+	cursor: pointer;
+}
+ 
+.dot:hover {
+	stroke: rgba(68, 127, 255, 0.3);
+}
+
 </style>
 
 <div >
 	 <div class="col-md-6">
 	 	<!-- <canvas tc-chartjs-line2 chart-data="data" chart-options="options"></canvas> -->
 
+		<div line-chart id="d3multiline" datajson="'data/LineSample.json'"
+		                    xaxis-name = ""
+		                    xaxis-pos = ""
+		                    yaxis-name = ""
+		                    yaxis-pos = "8"
+		                    d3-format= "">		
+		</div>
+
+
 	 	<div id="d3groupbar" angulard3-groupbar-chart datajson="'data/barSample.json'"
                     xaxis-name = ""
                     xaxis-pos = ""
                     yaxis-name = ""
                     yaxis-pos = "8"
-                    d3-format= "">
-		<!-- angular directive is angulard3-groupbar-chart -->
-		<!-- directive variables are xaxis-name,yaxis-name,xaxis-pos,yaxis-pos,y axis data format(d3-format)
-		and finally the datajson variable which is holding the external data source -->
-		</div
+                    d3-format= "">		
+		</div>
 	 </div>    
 </div>
 

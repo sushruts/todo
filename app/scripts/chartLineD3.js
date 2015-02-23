@@ -1,39 +1,4 @@
-// // http://fengyuanchen.github.io/cropper/#options
-// toDoApp.directive('cropupload', function($parse, FileUploader, $timeout, $q) {
-//     var $image = null;
-//     var uploader = null;
-//     var cropperModalId = "#cropperModal";
-//     return {
-//         restrict: "E",
-//         replace: true,
-//         scope: {
-//             cropperEnabled: '=',
-//             width: '=',
-//             height: '=',
-//             options: '=',
-//             model: "@",
-//             file: "@",
-//             croppedImage: "@",
-//             myImage: "@",
-//             aggrId: "="
-//         },
-//         templateUrl: 'templates/chart-template.html',
-//         controller: function($scope, $attrs) {
-
-//         },
-//         compile: function(element, attrs) {
-//             return function(scope, element, attrs, controller) {
-
-//             };
-//         }
-//     };
-// });
-// http://phloxblog.in/angulard3/start.html#.VONlOy7_Fdh
-// http://bl.ocks.org/Caged/6476579
-// http://bl.ocks.org/mbostock/3887051
-// http://techslides.com/over-2000-d3-js-examples-and-demos
-// https://github.com/mbostock/d3/wiki/Tutorials
-toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
+toDoApp.directive('lineChart', function() { // Angular Directive
     return {
         restrict: 'A',
         scope: {
@@ -48,23 +13,57 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
         controller: function($scope, $attrs) {
 
             // properties are directly passed to `create` method
-            $scope.GroupbarChart = function(datajson, yaxisName, yaxisPos) {
-                this.datajson = datajson;
+            $scope.GroupLineChart = function(datajson, yaxisName, yaxisPos) {
+                // var data = [{
+                //     "year": "2010",
+                //     "New York": "59.5",
+                //     "San Francisco": "57.0",
+                //     "Austin": "72.2",
+                //     "Denmark": "75.88"
+                // }, {
+                //     "year": "2011",
+                //     "New York": "59.5",
+                //     "San Francisco": "53.4",
+                //     "Austin": "67.7",
+                //     "Denmark": "65.88"
+                // }, {
+                //     "year": "2012",
+                //     "New York": "59.0",
+                //     "San Francisco": "53.4",
+                //     "Austin": "69.4",
+                //     "Denmark": "45.88"
+                // }, {
+                //     "year": "2013",
+                //     "New York": "59.4",
+                //     "San Francisco": "57.4",
+                //     "Austin": "68.0",
+                //     "Denmark": "55.88"
+                // }, {
+                //     "year": "2014",
+                //     "New York": "58.5",
+                //     "San Francisco": "42.7",
+                //     "Austin": "72.4",
+                //     "Denmark": "35.88"
+                // }, ];
                 this.yaxisName = yaxisName;
                 this.yaxisPos = yaxisPos;
                 this.workOnElement = function(element) {
                     this.element = element;
                 };
                 this.generateGraph = function() {
-
-                    var lineData = [ { "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
+                 var lineData = [ { "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
                                     { "x": 2012,  "y": 4159130}, { "x": 2013,  "y": 2402070},
                                    { "x": 2014,  "y": 2704659}];
                      var lineData2 = [ { "x": 2010,   "y": 889342},  { "x": 2011,  "y": 520483},
                                     { "x": 2012,  "y": 415130}, { "x": 2013,  "y": 242070},
                                    { "x": 2014,  "y": 270459}];               
 
-                         
+                       var dfd = [ [{ "x": 2010,   "y": 4343434},  { "x": 2011,  "y": 520483},
+                                    { "x": 2012,  "y": 415130}, { "x": 2013,  "y": 242070},
+                                   { "x": 2014,  "y": 65565}],[{ "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
+                                    { "x": 2012,  "y": 4159130}, { "x": 2013,  "y": 2402070},
+                                   { "x": 2014,  "y": 65575}]];               
+     
 
                     //d3 specific coding
                     var groupSpacing = 2;
@@ -216,38 +215,38 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                                 return "translate(" + x0(d.Year) + ",0)";
                             });
 
-                        console.log(state);
 
-                        state.selectAll()
-                            .data(function(d) {
-                                // console.log(d.ages)
-                                return d.ages;
-                            })
-                            .enter().append("rect")
-                            .attr("width", x1.rangeBand() / groupSpacing)
-                            .attr("x", function(d) {
-                                return x1(d.name);
-                            })
-                            .attr("y", function(d) {
-                                return y(d.value);
-                            })
-                            .attr("height", function(d) {
-                                return height - y(d.value);
-                            })
-                            .style("fill", function(d) {
-                                return color(d.name);
-                            })
+
+                        // state.selectAll("rect")
+                        //     .data(function(d) {
+
+                        //         return d.ages;
+                        //     })
+                        //     .enter().append("rect")
+                        //     .attr("width", x1.rangeBand() / groupSpacing)
+                        //     .attr("x", function(d) {
+                        //         return x1(d.name);
+                        //     })
+                        //     .attr("y", function(d) {
+                        //         return y(d.value);
+                        //     })
+                        //     .attr("height", function(d) {
+                        //         return height - y(d.value);
+                        //     })
+                        //     .style("fill", function(d) {
+                        //         return color(d.name);
+                        //     })
 
 
                     
                         var lineFunction = d3.svg.line()
                              .x(function(d) { return x0(d.x);})
                              .y(function(d) { return y(d.y); })
-                             .interpolate("step-after");  
+                             .interpolate("basic");  
 
                         var lineGraph = svg.append("path")
                             .attr("d", lineFunction(lineData))
-                            .style("stroke-dasharray", ("7, 7"))
+                            .style("stroke", ("7, 7"))
                             .attr("stroke", "green")
                             .attr("stroke-width", 2)                             
                             .attr("fill", "none");
@@ -255,17 +254,28 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                          var lineGraph2 = svg.append("path")
                             .attr("d", lineFunction(lineData2))
                             .style("stroke-dasharray", ("7, 7"))
-                            .attr("stroke", "green")
+                            .attr("stroke", "red")
                             .attr("stroke-width", 2)                             
                             .attr("fill", "none");
 
+                        // svg.selectAll('.line')
+                        //     .data(dfd)
+                        //     .enter()
+                        //     .append("path")
+                        //     .attr("class", "line")
+                        //     .attr("clip-path", "url(#clip)")
+                        //     .attr('stroke', function(d,i){          
+                        //         return "blue";
+                        //     })
+                        //     .attr("d", lineFunction);   
 
-                    
-                };
+
+
+                }
             }
         },
         link: function(scope, elem, attrs) {
-            var ourGraph = new scope.GroupbarChart(scope.datajson, scope.yaxisName, scope.yaxisPos);
+            var ourGraph = new scope.GroupLineChart(scope.datajson, scope.yaxisName, scope.yaxisPos);
             //d3 related Variable initialisation
             ourGraph.workOnElement('#' + elem[0].id); // Work on particular element
             ourGraph.generateGraph(); // generate the actual bar graph

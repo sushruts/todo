@@ -27,4 +27,7 @@
             </div>
         </div>              
     </div>
+
+    <input type="text" typeahead-wait-ms='700' typeahead-min-length='3' ng-model="asyncSelected" placeholder="Locations loaded via $http" typeahead="address for address in getLocation($viewValue)" typeahead-loading="loadingLocations" class="form-control">
+    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 </div>

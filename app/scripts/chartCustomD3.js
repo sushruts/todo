@@ -154,9 +154,13 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
 
                         data.forEach(function(d) {
                             d.ages = ageNames.map(function(name) {
+                                console.log( {
+                                    name: name,
+                                    value: d[name]
+                                })
                                 return {
                                     name: name,
-                                    value: +d[name]
+                                    value: d[name]
                                 };
                             });
                         });
@@ -237,6 +241,13 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             .style("fill", function(d) {
                                 return color(d.name);
                             })
+
+                        svg.append("rect")
+                            .attr("x", 0)
+                            .attr("y", 0)
+                            .attr("width", 12 * 7 * groupSpacing)
+                            .attr("height", height)
+                            .attr("class", "g")
 
 
                     

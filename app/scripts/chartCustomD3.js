@@ -74,7 +74,7 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             bottom: 30,
                             left: 80
                         },
-                        width = 960 - margin.left - margin.right,
+                        width = 1260 - margin.left - margin.right,
                         height = 500 - margin.top - margin.bottom;
 
                     var x0 = d3.scale.ordinal()
@@ -183,7 +183,7 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                             .enter().append("rect")
                             .attr("x", 0)
                             .attr("y", 0)
-                            .attr("width", 16 * 7 * groupSpacing)
+                            .attr("width", 12 * 7 * groupSpacing)
                             .attr("height", height)
                             .attr("class", "g")
                             .attr("transform", function(d, i) {
@@ -242,19 +242,27 @@ toDoApp.directive('angulard3GroupbarChart', function() { // Angular Directive
                                 return color(d.name);
                             })
 
-                        svg.append("rect")
-                            .attr("x", 0)
-                            .attr("y", 0)
-                            .attr("width", 12 * 7 * groupSpacing)
-                            .attr("height", height)
-                            .attr("class", "g")
+                        // svg.append("rect")
+                        //     .attr("x", 0)
+                        //     .attr("y", 0)
+                        //     .attr("width", 12 * 7 * groupSpacing)
+                        //     .attr("height", height)
+                        //     .attr("class", "g")
+
+                        var w= 1260+ margin.left + margin.right;
+                        var xx = d3.scale.ordinal()
+                        .rangeRoundBands([0, w],0);
+                     
+                      
+                        xx.domain(data.map(function(d) {
+                            return d.Year;
+                        }));
 
 
-                    
                         var lineFunction = d3.svg.line()
-                             .x(function(d) { return x0(d.x);})
+                             .x(function(d) { return xx(d.x);})
                              .y(function(d) { return y(d.y); })
-                             .interpolate("step-after");  
+                             .interpolate("step");  
 
                         var lineGraph = svg.append("path")
                             .attr("d", lineFunction(lineData))

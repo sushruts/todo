@@ -93,6 +93,7 @@ toDoApp.directive('lineChart', function() { // Angular Directive
                     var yAxis = d3.svg.axis()
                         .scale(y)
                         .orient("left")
+                       
                         .tickFormat(d3.format(".2"));
 
                     var svg = d3.select(this.element).append("svg")

@@ -51,19 +51,56 @@ toDoApp.directive('lineChart', function() { // Angular Directive
                     this.element = element;
                 };
                 this.generateGraph = function() {
-                 var lineData = [ { "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
-                                    { "x": 2012,  "y": 4159130}, { "x": 2013,  "y": 2402070},
-                                   { "x": 2014,  "y": 2704659}];
-                     var lineData2 = [ { "x": 2010,   "y": 889342},  { "x": 2011,  "y": 520483},
-                                    { "x": 2012,  "y": 415130}, { "x": 2013,  "y": 242070},
-                                   { "x": 2014,  "y": 270459}];               
+                    var lineData = [{
+                        "x": 2010,
+                        "y": 8819342
+                    }, {
+                        "x": 2011,
+                        "y": 6204483
+                    }, {
+                        "x": 2012,
+                        "y": 5159130
+                    }, {
+                        "x": 2013,
+                        "y": 2402070
+                    }, {
+                        "x": 2014,
+                        "y": 0
+                    }];
+                    var lineData2 = [{
+                        "x": 2010,
+                        "y": 6589342
+                    }, {
+                        "x": 2011,
+                        "y": 720483
+                    }, {
+                        "x": 2012,
+                        "y": 6819342
+                    }, {
+                        "x": 2013,
+                        "y": 0
+                    }, {
+                        "x": 2014,
+                        "y": 720459
+                    }];
 
-                       var dfd = [ [{ "x": 2010,   "y": 4343434},  { "x": 2011,  "y": 520483},
-                                    { "x": 2012,  "y": 415130}, { "x": 2013,  "y": 242070},
-                                   { "x": 2014,  "y": 65565}],[{ "x": 2010,   "y": 8819342},  { "x": 2011,  "y": 5204483},
-                                    { "x": 2012,  "y": 4159130}, { "x": 2013,  "y": 2402070},
-                                   { "x": 2014,  "y": 65575}]];               
-     
+                    var lineData3 = [{
+                        "x": 2010,
+                        "y": 343434
+                    }, {
+                        "x": 2011,
+                        "y": 5250483
+                    }, {
+                        "x": 2012,
+                        "y": 451430
+                    }, {
+                        "x": 2013,
+                        "y": 3342070
+                    }, {
+                        "x": 2014,
+                        "y": 7819342
+                    }];
+
 
                     //d3 specific coding
                     var groupSpacing = 2;
@@ -77,7 +114,7 @@ toDoApp.directive('lineChart', function() { // Angular Directive
                         height = 500 - margin.top - margin.bottom;
 
                     var x0 = d3.scale.ordinal()
-                        .rangeRoundBands([0, width], .1);
+                        .rangeBands([0, width], .1, .1);
 
                     var x1 = d3.scale.ordinal();
                     var y = d3.scale.linear()
@@ -93,8 +130,8 @@ toDoApp.directive('lineChart', function() { // Angular Directive
                     var yAxis = d3.svg.axis()
                         .scale(y)
                         .orient("left")
-                       
-                        .tickFormat(d3.format(".2"));
+
+                    .tickFormat(d3.format(".2"));
 
                     var svg = d3.select(this.element).append("svg")
                         .attr("width", width + margin.left + margin.right)
@@ -102,174 +139,253 @@ toDoApp.directive('lineChart', function() { // Angular Directive
                         .append("g")
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                        data=[{
-                                "Year": "2010",
-                                "Under 5 Years": "8819342",
-                                "5 to 13 Years": "552339",
-                                "14 to 17 Years": "259034",
-                                "18 to 24 Years": "450818",
-                                "25 to 44 Years": "1215966",
-                                "45 to 64 Years": "641667"
-                            }, {
-                                "Year": "2011",
-                                "Under 5 Years": "5204483",
-                                "5 to 13 Years": "85640",
-                                "14 to 17 Years": "42153",
-                                "18 to 24 Years": "74257",
-                                "25 to 44 Years": "183159",
-                                "45 to 64 Years": "50277"
-                            }, {
-                                "Year": "2012",
-                                "Under 5 Years": "4159130",
-                                "5 to 13 Years": "828669",
-                                "14 to 17 Years": "362642",
-                                "18 to 24 Years": "601943",
-                                "25 to 44 Years": "1804762",
-                                "45 to 64 Years": "1523681"
-                            }, {
-                                "Year": "2013",
-                                "Under 5 Years": "2402070",
-                                "5 to 13 Years": "343207",
-                                "14 to 17 Years": "157204",
-                                "18 to 24 Years": "264160",
-                                "25 to 44 Years": "754420",
-                                "45 to 64 Years": "727124"
-                            }, {
-                                "Year": "2014",
-                                "Under 5 Years": "2704659",
-                                "5 to 13 Years": "4499890",
-                                "14 to 17 Years": "2159981",
-                                "18 to 24 Years": "3853788",
-                                "25 to 44 Years": "10604510",
-                                "45 to 64 Years": "8819342"
-                            }
+                    data = [{
+                            "Year": "2010",
+                            "Under 5 Years": "8819342",
+                            "5 to 13 Years": "552339",
+                            "14 to 17 Years": "259034",
+                            "18 to 24 Years": "450818",
+                            "25 to 44 Years": "1215966",
+                            "45 to 64 Years": "641667"
+                        }, {
+                            "Year": "2011",
+                            "Under 5 Years": "5204483",
+                            "5 to 13 Years": "85640",
+                            "14 to 17 Years": "42153",
+                            "18 to 24 Years": "74257",
+                            "25 to 44 Years": "183159",
+                            "45 to 64 Years": "50277"
+                        }, {
+                            "Year": "2012",
+                            "Under 5 Years": "4159130",
+                            "5 to 13 Years": "828669",
+                            "14 to 17 Years": "362642",
+                            "18 to 24 Years": "601943",
+                            "25 to 44 Years": "1804762",
+                            "45 to 64 Years": "1523681"
+                        }, {
+                            "Year": "2013",
+                            "Under 5 Years": "2402070",
+                            "5 to 13 Years": "343207",
+                            "14 to 17 Years": "157204",
+                            "18 to 24 Years": "264160",
+                            "25 to 44 Years": "754420",
+                            "45 to 64 Years": "727124"
+                        }, {
+                            "Year": "2014",
+                            "Under 5 Years": "2704659",
+                            "5 to 13 Years": "4499890",
+                            "14 to 17 Years": "2159981",
+                            "18 to 24 Years": "3853788",
+                            "25 to 44 Years": "10604510",
+                            "45 to 64 Years": "8819342"
+                        }
 
-                        ]
-                    
-                        var ageNames = d3.keys(data[0]).filter(function(key) {
-                            return key !== "Year";
+                    ]
+
+                    var ageNames = d3.keys(data[0]).filter(function(key) {
+                        return key !== "Year";
+                    });
+
+                    console.log(ageNames);
+
+                    data.forEach(function(d) {
+                        d.ages = ageNames.map(function(name) {
+                            return {
+                                name: name,
+                                value: +d[name]
+                            };
                         });
+                    });
+
+
+                    x0.domain(data.map(function(d) {
+                        return d.Year;
+                    }));
+
+
+                    x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
+                    y.domain([0, d3.max(data, function(d) {
+                        return d3.max(d.ages, function(d) {
+                            return d.value;
+                        });
+                    })]);
+
+                    svg.selectAll(".state")
+                        .data(data)
+                        .enter().append("rect")
+                        .attr("x", 1)
+                        .attr("y", 0)
+                        .attr("width", 20 * 7 * groupSpacing)
+                        .attr("height", height)
+                        .attr("class", "g")
+                        .attr("transform", function(d, i) {
+                            return "translate(" + x0(d.Year) + ",0)";
+                        }).style("fill", function(d, i) {
+                            if (i % 2 == 0)
+                                return "#fff";
+                            else
+                                return "#f8f8f8";
+                        });
+
+
+                    svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis)
+
+                    svg.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", this.yaxisPos)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text(this.yaxisName);
+
+
+                    var state = svg.selectAll(".state")
+                        .data(data)
+                        .enter().append("g")
+                        .attr("class", "g")
+                        .attr("transform", function(d) {
+                            return "translate(" + x0(d.Year) + ",0)";
+                        });
+
+
+
+                    // state.selectAll("rect")
+                    //     .data(function(d) {
+
+                    //         return d.ages;
+                    //     })
+                    //     .enter().append("rect")
+                    //     .attr("width", x1.rangeBand() / groupSpacing)
+                    //     .attr("x", function(d) {
+                    //         return x1(d.name);
+                    //     })
+                    //     .attr("y", function(d) {
+                    //         return y(d.value);
+                    //     })
+                    //     .attr("height", function(d) {
+                    //         return height - y(d.value);
+                    //     })
+                    //     .style("fill", function(d) {
+                    //         return color(d.name);
+                    //     })
+
+                    var x3 = d3.scale.ordinal()
+                        .rangeBands([0, width], 1, .55);
+
+                    x3.domain(data.map(function(d) {
+                        return d.Year;
+                    }));
+
+
+                    var lineFunction = d3.svg.line()
+                        .x(function(d) {
+                            return x3(d.x);
+                        })
+                        .y(function(d) {
+                            return y(d.y);
+                        })
+                        .interpolate("basic");
+
+                    var lineGraph = svg.append("path")
+                        .attr("d", lineFunction(lineData))
+                        .style("stroke", ("7, 7"))
+                        .attr("stroke", "green")
+                        .attr("stroke-width", 3)
+                        .attr("fill", "none");
+                   
+                    var points = svg.selectAll('.dots')
+                                .data(lineData)
+                                .enter()
+                                .append("g")
+                                .attr("class", "dots")
+                                .attr("clip-path", "url(#clip)");   
+                             
+                    points.selectAll('.dot')
+                        .data(function(d, index){       
+                            var a = [];   
+                                a.push({'index': index, 'point': d});
+                               console.log(a)
+                            return a;
+                        })
+                        .enter()
+                        .append('circle')                        
+                         .attr('cx', function (d) { return x3(d.point.x); })
+                        .attr('cy', function (d) { return y(d.point.y); })
+                        .attr("r", 7)
+                        .attr("fill", "white")
+                        .attr("stroke", "green")
+                        .attr("stroke-width",2);
+                                               
                        
-                        console.log(ageNames);
+                  
 
-                        data.forEach(function(d) {
-                            d.ages = ageNames.map(function(name) {
-                                return {
-                                    name: name,
-                                    value: +d[name]
-                                };
-                            });
-                        });
+                    var lineGraph2 = svg.append("path")
+                        .attr("d", lineFunction(lineData2))
+                        .style("stroke", ("7, 7"))
+                        .attr("stroke", "red")
+                        .attr("stroke-width", 3)
+                        .attr("fill", "none");
 
-
-                        x0.domain(data.map(function(d) {
-                            return d.Year;
-                        }));
-
-
-                        x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
-                        y.domain([0, d3.max(data, function(d) {
-                            return d3.max(d.ages, function(d) {
-                                return d.value;
-                            });
-                        })]);
-
-                        svg.selectAll(".state")
-                            .data(data)
-                            .enter().append("rect")
-                            .attr("x", 0)
-                            .attr("y", 0)
-                            .attr("width", 16 * 7 * groupSpacing)
-                            .attr("height", height)
-                            .attr("class", "g")
-                            .attr("transform", function(d, i) {
-                                return "translate(" + x0(d.Year) + ",0)";
-                            }).style("fill", function(d, i) {
-                                if (i % 2 == 0)
-                                    return "#fff";
-                                else
-                                    return "#f8f8f8";
-                            });
+                   var points2 = svg.selectAll('.dots2')
+                                .data(lineData2)
+                                .enter()
+                                .append("g")
+                                .attr("class", "dots")
+                                .attr("clip-path", "url(#clip)");   
+                             
+                    points2.selectAll('.dot2')
+                        .data(function(d, index){       
+                            var a = [];   
+                                a.push({'index': index, 'point': d});
+                               console.log(a)
+                            return a;
+                        })
+                        .enter()
+                        .append('circle')                        
+                         .attr('cx', function (d) { return x3(d.point.x); })
+                        .attr('cy', function (d) { return y(d.point.y); })
+                        .attr("r", 7)
+                        .attr("fill", "white")
+                        .attr("stroke", "red")
+                        .attr("stroke-width",2);
 
 
-                        svg.append("g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + height + ")")
-                            .call(xAxis)
+                    var lineGraph3 = svg.append("path")
+                        .attr("d", lineFunction(lineData3))
+                        .style("stroke", ("7, 7"))
+                        .attr("stroke", "blue")
+                        .attr("stroke-width", 3)
+                        .attr("fill", "none");
 
-                        svg.append("g")
-                            .attr("class", "y axis")
-                            .call(yAxis)
-                            .append("text")
-                            .attr("transform", "rotate(-90)")
-                            .attr("y", this.yaxisPos)
-                            .attr("dy", ".71em")
-                            .style("text-anchor", "end")
-                            .text(this.yaxisName);
-
-
-                        var state = svg.selectAll(".state")
-                            .data(data)
-                            .enter().append("g")
-                            .attr("class", "g")
-                            .attr("transform", function(d) {
-                                return "translate(" + x0(d.Year) + ",0)";
-                            });
-
-
-
-                        // state.selectAll("rect")
-                        //     .data(function(d) {
-
-                        //         return d.ages;
-                        //     })
-                        //     .enter().append("rect")
-                        //     .attr("width", x1.rangeBand() / groupSpacing)
-                        //     .attr("x", function(d) {
-                        //         return x1(d.name);
-                        //     })
-                        //     .attr("y", function(d) {
-                        //         return y(d.value);
-                        //     })
-                        //     .attr("height", function(d) {
-                        //         return height - y(d.value);
-                        //     })
-                        //     .style("fill", function(d) {
-                        //         return color(d.name);
-                        //     })
-
-
-                    
-                        var lineFunction = d3.svg.line()
-                             .x(function(d) { return x0(d.x);})
-                             .y(function(d) { return y(d.y); })
-                             .interpolate("basic");  
-
-                        var lineGraph = svg.append("path")
-                            .attr("d", lineFunction(lineData))
-                            .style("stroke", ("7, 7"))
-                            .attr("stroke", "green")
-                            .attr("stroke-width", 2)                             
-                            .attr("fill", "none");
-
-                         var lineGraph2 = svg.append("path")
-                            .attr("d", lineFunction(lineData2))
-                            .style("stroke-dasharray", ("7, 7"))
-                            .attr("stroke", "red")
-                            .attr("stroke-width", 2)                             
-                            .attr("fill", "none");
-
-                        // svg.selectAll('.line')
-                        //     .data(dfd)
-                        //     .enter()
-                        //     .append("path")
-                        //     .attr("class", "line")
-                        //     .attr("clip-path", "url(#clip)")
-                        //     .attr('stroke', function(d,i){          
-                        //         return "blue";
-                        //     })
-                        //     .attr("d", lineFunction);   
-
+                      var points3 = svg.selectAll('.dots3')
+                                .data(lineData3)
+                                .enter()
+                                .append("g")
+                                .attr("class", "dots")
+                                .attr("clip-path", "url(#clip)");   
+                             
+                    points3.selectAll('.dot3')
+                        .data(function(d, index){       
+                            var a = [];   
+                                a.push({'index': index, 'point': d});
+                               console.log(a)
+                            return a;
+                        })
+                        .enter()
+                        .append('circle')                        
+                         .attr('cx', function (d) { return x3(d.point.x); })
+                        .attr('cy', function (d) { return y(d.point.y); })
+                        .attr("r", 7)
+                        .attr("fill", "white")
+                        .attr("stroke", "blue")
+                        .attr("stroke-width",2);     
+                  
 
 
                 }
